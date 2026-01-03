@@ -13,7 +13,7 @@ if (!migrationName) {
 const migrationPath = path.join('src', 'migrations', migrationName);
 const dataSourcePath = path.join('src', 'data-source.ts');
 
-const command = `typeorm-ts-node-commonjs migration:generate ${migrationPath} -d ${dataSourcePath}`;
+const command = `npx typeorm-ts-node-commonjs migration:generate ${migrationPath} -d ${dataSourcePath}`;
 
 console.log(`Generating migration: ${migrationName}`);
 execSync(command, { stdio: 'inherit' });
