@@ -19,8 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "node scripts/generate-migration.js",
-    "migration:run": "node_modules/.bin/typeorm-ts-node-commonjs migration:run -d src/data-source.ts",
-    "migration:revert": "node_modules/.bin/typeorm-ts-node-commonjs migration:revert -d src/data-source.ts",
+    "migration:run": "node scripts/run-migration.js run",
+    "migration:revert": "node scripts/run-migration.js revert",
     "seed": "ts-node -r tsconfig-paths/register src/seeding/seed.ts seed",
     "seed:run": "ts-node -r tsconfig-paths/register src/seeding/seed.ts seed",
     "dev": "npm install --legacy-peer-deps && npm run migration:run && npm run seed && npm run start:dev"
@@ -62,7 +62,8 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "dotenv": "^16.4.5"
   },
   "jest": {
     "moduleFileExtensions": [
