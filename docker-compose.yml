@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: state-archive-db
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-state_archive_mock}
+    ports:
+      - "${DATABASE_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: state-archive-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${DATABASE_USER:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      DATABASE_NAME: ${DATABASE_NAME:-state_archive_mock}
+      SEED_USER1_EMAIL: ${SEED_USER1_EMAIL}
+      SEED_USER2_EMAIL: ${SEED_USER2_EMAIL}
+      SEED_USER3_EMAIL: ${SEED_USER3_EMAIL}
+      SEED_USER4_EMAIL: ${SEED_USER4_EMAIL}
+      SEED_USER1_PHONE: ${SEED_USER1_PHONE}
+      SEED_USER2_PHONE: ${SEED_USER2_PHONE}
+      SEED_USER3_PHONE: ${SEED_USER3_PHONE}
+      SEED_USER4_PHONE: ${SEED_USER4_PHONE}
+      NODE_ENV: ${NODE_ENV:-development}
+      BASE_URL: ${BASE_URL:-http://localhost:3000}
+      PORT: ${PORT:-3000}
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
