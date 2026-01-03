@@ -26,6 +26,11 @@ import {
         return await this.stateArchiveService.findAll();
     }
 
+    @Get('egn/:egn')
+    async findByEgn(@Param('egn') egn: string): Promise<StateArchiveMock | null> {
+        return await this.stateArchiveService.findByEgn(egn);
+    }
+
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<StateArchiveMock> {
         return await this.stateArchiveService.findOne(id);
@@ -43,10 +48,5 @@ import {
     async remove(@Param('id') id: string): Promise<{ message: string }> {
         await this.stateArchiveService.remove(id);
         return { message: 'Archive deleted successfully' };
-    }
-
-    @Get('egn/:egn')
-    async findByEgn(@Param('egn') egn: string): Promise<StateArchiveMock | null> {
-        return await this.stateArchiveService.findByEgn(egn);
     }
 }   
