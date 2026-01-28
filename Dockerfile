@@ -6,7 +6,7 @@ RUN apk add --no-cache netcat-openbsd
 
 COPY package*.json ./
 
-RUN npm ci --legacy-peer-deps
+RUN npm install
 
 COPY . .
 

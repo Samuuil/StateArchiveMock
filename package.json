@@ -19,8 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "node scripts/generate-migration.js",
-    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/data-source.ts",
-    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/data-source.ts",
+    "migration:run": "node scripts/run-migration.js run",
+    "migration:revert": "node scripts/run-migration.js revert",
     "seed": "ts-node -r tsconfig-paths/register src/seeding/seed.ts seed",
     "seed:run": "ts-node -r tsconfig-paths/register src/seeding/seed.ts seed",
     "dev": "npm install --legacy-peer-deps && npm run migration:run && npm run seed && npm run start:dev"
@@ -30,11 +30,9 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/platform-express": "^11.0.1",
-    "@nestjs/swagger": "^7.4.2",
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "nestjs-paginate": "^3.2.0",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
@@ -64,7 +62,8 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "dotenv": "^16.4.5"
   },
   "jest": {
     "moduleFileExtensions": [

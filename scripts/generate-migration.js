@@ -1,5 +1,12 @@
 const { execSync } = require('child_process');
 const path = require('path');
+const fs = require('fs');
+
+// Load environment variables from .env file if it exists
+const envPath = path.join(__dirname, '..', '.env');
+if (fs.existsSync(envPath)) {
+  require('dotenv').config({ path: envPath });
+}
 
 // Get migration name from command line arguments
 const migrationName = process.argv[2];
@@ -13,7 +20,8 @@ if (!migrationName) {
 const migrationPath = path.join('src', 'migrations', migrationName);
 const dataSourcePath = path.join('src', 'data-source.ts');
 
-const command = `typeorm-ts-node-commonjs migration:generate ${migrationPath} -d ${dataSourcePath}`;
+// Use ts-node directly with typeorm CLI
+const command = `ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:generate ${migrationPath} -d ${dataSourcePath}`;
 
 console.log(`Generating migration: ${migrationName}`);
 execSync(command, { stdio: 'inherit' });

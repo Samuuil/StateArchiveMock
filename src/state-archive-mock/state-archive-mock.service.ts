@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, InternalServerErrorException, ConflictException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { paginate, PaginateQuery, FilterOperator } from 'nestjs-paginate';
 import { StateArchiveMock } from './entities/state-archive-mock.entity';
 import { CreateStateArchiveMockDto } from './dto/create-state-archive-mock.dto';
 import { UpdateStateArchiveMockDto } from './dto/update-state-archive-mock.dto';
@@ -39,20 +38,10 @@ export class StateArchiveMockService {
     }
   }
 
-  async findAll(query: PaginateQuery) {
+  async findAll(): Promise<StateArchiveMock[]> {
     try {
-      return paginate(query, this.archiveRepo, {
-        sortableColumns: ['id', 'egn', 'fullName', 'email', 'phoneNumber'],
-        defaultSortBy: [['fullName', 'ASC']],
-        searchableColumns: ['egn', 'fullName', 'email', 'phoneNumber'],
-        filterableColumns: {
-          egn: [FilterOperator.ILIKE],
-          fullName: [FilterOperator.ILIKE],
-          email: [FilterOperator.ILIKE],
-          phoneNumber: [FilterOperator.ILIKE],
-        },
-        defaultLimit: 10,
-        maxLimit: 100,
+      return await this.archiveRepo.find({
+        order: { fullName: 'ASC' },
       });
     } catch (error) {
       this.logger.error(`${StateArchiveErrorMessages[StateArchiveErrorCode.DATABASE_ERROR]}: ${error.message}`, error.stack);
