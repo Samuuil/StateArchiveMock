@@ -31,6 +31,11 @@ import {
         return await this.stateArchiveService.findByEgn(egn);
     }
 
+    @Get('phone/:phoneNumber')
+    async findByPhoneNumber(@Param('phoneNumber') phoneNumber: string): Promise<StateArchiveMock | null> {
+        return await this.stateArchiveService.findByPhoneNumber(phoneNumber);
+    }
+
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<StateArchiveMock> {
         return await this.stateArchiveService.findOne(id);

@@ -127,4 +127,16 @@ export class StateArchiveMockService {
       });
     }
   }
+
+  async findByPhoneNumber(phoneNumber: string): Promise<StateArchiveMock | null> {
+    try {
+      return await this.archiveRepo.findOne({ where: { phoneNumber } });
+    } catch (error) {
+      this.logger.error(`${StateArchiveErrorMessages[StateArchiveErrorCode.DATABASE_ERROR]}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException({
+        code: StateArchiveErrorCode.DATABASE_ERROR,
+        message: StateArchiveErrorMessages[StateArchiveErrorCode.DATABASE_ERROR],
+      });
+    }
+  }
 }
